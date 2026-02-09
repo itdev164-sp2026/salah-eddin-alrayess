@@ -8,18 +8,26 @@
  * @type {import('gatsby').GatsbyConfig}
  */
 module.exports = {
-siteMetadata: {
-  title: `Gatsby Blog`,
-  description: ``,
-  author: `Salah Eddin AlRayess`,
-  contact: {
-    name: `Salah Eddin AlRayess`,
-    company: `MATC Student`,
-    address: `Milwaukee, WI`
-  }
-},
+  siteMetadata: {
+    title: `Gatsby Blog`,
+    description: ``,
+    author: `Salah Eddin AlRayess`,
+    contact: {
+      name: `Salah Eddin AlRayess`,
+      company: `MATC Student`,
+      address: `Milwaukee, WI`,
+    },
+  },
 
   plugins: [
+{
+  resolve: `gatsby-source-contentful`,
+  options: {
+    spaceId: `np4ve54jrgwa`,
+    accessToken: `Wr_EBZGNAORFw-4YOCceXbmWFujbv7g7hzfwjlm84WA`,
+  },
+},
+
     `gatsby-plugin-image`,
     {
       resolve: `gatsby-source-filesystem`,
@@ -37,11 +45,8 @@ siteMetadata: {
         short_name: `starter`,
         start_url: `/`,
         background_color: `#663399`,
-        // This will impact how browsers show your PWA/website
-        // https://css-tricks.com/meta-theme-color-and-trickery/
-        // theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/gatsby-icon.png`, // This path is relative to the root of the site.
+        icon: `src/images/gatsby-icon.png`,
       },
     },
   ],
