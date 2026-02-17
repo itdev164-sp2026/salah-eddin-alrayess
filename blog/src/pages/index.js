@@ -1,32 +1,59 @@
 import * as React from "react"
 import { graphql, Link } from "gatsby"
+import { GatsbyImage } from "gatsby-plugin-image"
 import Layout from "../components/layout"
 import Seo from "../components/seo"
+import * as styles from "../components/index.module.css"
 
-const IndexPage = ({ data }) => {
-  const posts = data.allContentfulBlogPost.nodes
+const IndexPage = ({ data }) => (
+  <Layout>
+    <Seo title="Home" />
+    <ul className={styles.list}>
+      {data.allContentfulBlogPost.edges.map(edge => (
+        <li key={edge.node.id}>
+          <Link to={`/${edge.node.slug}/`}>
+            {edge.node.title}
+          </Link>
 
-  return (
-    <Layout>
-      <h1>Blog Posts</h1>
-      <ul>
-        {posts.map(post => (
-          <li key={post.id}>
-            <Link to={`/${post.slug}/`}>{post.title}</Link>
-          </li>
-        ))}
-      </ul>
-    </Layout>
-  )
-}
+          {edge.node.heroImage && (
+            <div>
+              <GatsbyImage
+                image={edge.node.heroImage.gatsbyImageData}
+                alt={edge.node.title}
+              />
+            </div>
+          )}
+
+          <div>
+            {edge.node.body.childMarkdownRemark.excerpt}
+          </div>
+        </li>
+      ))}
+    </ul>
+  </Layout>
+)
 
 export const pageQuery = graphql`
   {
     allContentfulBlogPost {
-      nodes {
-        id
-        title
-        slug
+      edges {
+        node {
+          id
+          title
+          slug
+          body {
+            childMarkdownRemark {
+              excerpt
+            }
+          }
+          heroImage {
+            gatsbyImageData(
+              layout: CONSTRAINED
+              placeholder: BLURRED
+              width: 300
+            )
+          }
+        }
       }
     }
   }

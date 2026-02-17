@@ -1,27 +1,33 @@
-import React from "react"
+import * as React from "react"
 import { graphql } from "gatsby"
+import Layout from "../components/layout"
 
 const BlogPost = ({ data }) => {
-  if (!data || !data.contentfulBlogPost) {
-    return <main>Post not found</main>
-  }
-
-  const post = data.contentfulBlogPost
+  const { title, body } = data.contentfulBlogPost
 
   return (
-    <main>
-      <h1>{post.title}</h1>
-    </main>
+    <Layout>
+      <h1>{title}</h1>
+
+      <div
+        dangerouslySetInnerHTML={{__html: body.childMarkdownRemark.html}}
+      />
+    </Layout>
   )
 }
 
 export default BlogPost
 
 export const pageQuery = graphql`
-  query BlogPostBySlug($slug: String!) {
+  query blogPostQuery($slug: String!) {
     contentfulBlogPost(slug: { eq: $slug }) {
       title
       slug
+      body {
+        childMarkdownRemark {
+          html
+        }
+      }
     }
   }
 `
